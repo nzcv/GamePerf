@@ -93,6 +93,7 @@ pub fn rpc_handler(mut req: RpcRequest, utils: RpcUtils) -> Option<RpcResponse> 
             command::import_head_morph,
             command::export_head_morph_dialog,
             command::stop_capture,
+            command::get_front_app
         ]);
 
         call_commands_with_param!(req, utils => [

@@ -1,0 +1,136 @@
+[config]
+default_to_workspace = false
+
+# Utils
+[tasks.npm-update]
+command = "npm"
+args = ["update"]
+
+[tasks.npm-update.windows]
+command = "powershell"
+args = ["-Command", "npm", "update"]
+
+[tasks.update]
+command = "cargo"
+args = ["update"]
+dependencies = ["npm-update"]
+
+[tasks.fmt]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--all"]
+
+[tasks.clippy]
+install_crate = "clippy"
+command = "cargo"
+args = ["clippy", "--all"]
+dependencies = ["fmt"]
+
+[tasks.outdated]
+install_crate = "outdated"
+command = "cargo"
+args = ["outdated", "-wR"]
+dependencies = ["update"]
+
+[tasks.test]
+command = "cargo"
+args = ["test", "--all"]
+dependencies = ["update"]
+
+# Serve
+[tasks.tailwind-watch]
+command = "npm"
+args = ["run", "watch"]
+
+[tasks.tailwind-watch.windows]
+command = "powershell"
+args = ["-Command", "npm", "run", "watch"]
+
+[tasks.trunk-serve]
+install_crate = "trunk"
+command = "trunk"
+args = ["serve", "--dist", "target/dist"]
+
+[tasks.serve]
+run_task = { name = ["tailwind-watch", "trunk-serve"], parallel = true }
+
+# Build
+[tasks.tailwind-build]
+command = "npm"
+args = ["run", "build"]
+
+[tasks.tailwind-build.windows]
+command = "powershell"
+args = ["-Command", "npm", "run", "build"]
+
+[tasks.trunk-build]
+install_crate = "trunk"
+command = "trunk"
+args = ["build", "--dist", "target/dist"]
+
+[tasks.build]
+clear = true
+command = "cargo"
+args = ["build", "-p", "app"]
+dependencies = ["tailwind-build", "trunk-build"]
+
+[tasks.run]
+clear = true
+command = "cargo"
+args = ["run"]
+dependencies = ["webpack"]
+
+[tasks.webpack]
+command = "powershell"
+args = ["-Command", "yarn", "webpack"]
+
+
+[tasks.me1]
+clear = true
+command = "cargo"
+args = ["run", "-p", "app", "--", "test/ME1Save.MassEffectSave"]
+dependencies = ["tailwind-build", "trunk-build"]
+
+[tasks.me1le]
+clear = true
+command = "cargo"
+args = ["run", "-p", "app", "--", "test/ME1LeSave.pcsav"]
+dependencies = ["tailwind-build", "trunk-build"]
+
+[tasks.me2]
+clear = true
+command = "cargo"
+args = ["run", "-p", "app", "--", "test/ME2Save.pcsav"]
+dependencies = ["tailwind-build", "trunk-build"]
+
+[tasks.me3]
+clear = true
+command = "cargo"
+args = ["run", "-p", "app", "--", "test/ME3Save.pcsav"]
+dependencies = ["tailwind-build", "trunk-build"]
+
+# Release
+[tasks.tailwind-release]
+command = "npm"
+args = ["run", "release"]
+
+[tasks.tailwind-release.windows]
+command = "powershell"
+args = ["-Command", "npm", "run", "release"]
+
+[tasks.trunk-release]
+install_script = "cargo install trunk"
+command = "trunk"
+args = ["build", "--dist", "target/dist", "--release"]
+
+[tasks.release]
+clear = true
+command = "cargo"
+args = ["build", "-p", "app", "--release"]
+dependencies = ["tailwind-release", "trunk-release"]
+
+# Cook
+[tasks.cook]
+command = "iscc"
+args = ["InnoSetup.iss"]
+dependencies = ["fmt", "clippy", "test", "release"]

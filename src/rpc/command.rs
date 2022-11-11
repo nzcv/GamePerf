@@ -183,3 +183,7 @@ pub fn stop_capture(utils: &RpcUtils) -> Result<String> {
     log::info!("stop_capture ......");
     Ok("开始采集".into())
 }
+
+pub fn get_front_app(rpc: &RpcUtils) -> Result<String> {
+    util::current_app()    
+}
