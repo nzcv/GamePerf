@@ -9,3 +9,7 @@
 ## Screens
 
 ![image](https://github.com/user-attachments/assets/3947b23c-1d0c-44b7-ae03-dd809ae9e578)
+
+## 其他
+
+wx: kkdoc47
