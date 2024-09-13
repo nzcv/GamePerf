@@ -8,4 +8,4 @@
 
 ## Screens
 
-![20221110144701](https://cdn.jsdelivr.net/gh/nzcv/picgo/20221110144701.png)
+![image](https://github.com/user-attachments/assets/3947b23c-1d0c-44b7-ae03-dd809ae9e578)
